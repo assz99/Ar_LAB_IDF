@@ -42,6 +42,7 @@ void task_sensor(void *pvParameter)
     {
         temp_DHT();
         medicaoPotencia();
+        msgSensores = String(temperatura) + "!"+ String(humidade) + "!" + String(Irms) + "!" + String(potencia) + "!" + String(kwhTotal_Acc, 5);
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 }

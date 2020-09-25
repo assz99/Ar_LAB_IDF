@@ -5,7 +5,7 @@ void setup()
     Serial.begin(115200);
     oledInit();
     SCT013.current(pinSCT, 5.4);
-    
+
     ////////////////////////////////////////
     // Convertendo o MAC para MAC byte
     ////////////////////////////////////////
@@ -34,17 +34,19 @@ void setup()
     // Convertendo o MAC para MAC byte
     ////////////////////////////////////////
 
-    blueInit(); 
+    blueInit();
 
-    if( (xTaskCreate( task_sensor, "task_sensor", 4048, NULL, 5, NULL) ) != pdTRUE )
-	{
-		ESP_LOGI( TAG, "error - nao foi possivel alocar task_sensor.\n" );	
-		return;		
-	}else{
-	  Serial.println("Task criada com sucesso");
-	  }
+    if ((xTaskCreate(task_sensor, "task_sensor", 4048, NULL, 5, NULL)) != pdTRUE)
+    {
+        ESP_LOGI(TAG, "error - nao foi possivel alocar task_sensor.\n");
+        return;
+    }
+    else
+    {
+        Serial.println("Task criada com sucesso");
+    }
 }
 
 void loop(){
-    
+
 };

@@ -20,6 +20,7 @@ class CharacteristicCallbacks: public BLECharacteristicCallbacks {
           msg= msg + rxValue[i];  
         }  
       }
+      //TRATAR A MENSAGEM E SABER SE E PARA MIM OU NAO
       int x = msg.toInt();
       comando_ar(x);
     }

@@ -27,7 +27,14 @@
 #include <SimpleDHT.h>
 #include "Oled_api.h"
 
+//Variaveis do controle do LoRa
 String localAddress;
+String destino;
+String projNome;
+int timeStamp;
+int controleTimeStamp[10] = {0,0,0,0,0,0,0,0,0,0};
+String controleMsg[10];
+String msgSensores;
 
 //Variaveis DHT22
 float humidade;
