@@ -36,7 +36,15 @@ void setup()
 
     blueInit(); 
 
-    task_timers();
+    if( (xTaskCreate( task_sensor, "task_sensor", 4048, NULL, 5, NULL) ) != pdTRUE )
+	{
+		ESP_LOGI( TAG, "error - nao foi possivel alocar task_sensor.\n" );	
+		return;		
+	}else{
+	  Serial.println("Task criada com sucesso");
+	  }
 }
 
-void loop(){};
+void loop(){
+    
+};

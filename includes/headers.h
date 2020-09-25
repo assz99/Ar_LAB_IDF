@@ -61,7 +61,7 @@ unsigned int ar28[] = {3050, 1550, 500, 1100, 500, 1050, 500, 300, 500, 300, 500
 ///////////////////////////
 // Defines Do timer
 #define mainLoRa_PERIOD (pdMS_TO_TICKS(3333UL))
-#define mainSensor_PERIOD (pdMS_TO_TICKS(3000UL)) //Leitura dos sensores a cada 1 SEG
+#define mainSensor_PERIOD (pdMS_TO_TICKS(1000UL)) //Leitura dos sensores a cada 1 SEG
 
 
 
@@ -73,6 +73,8 @@ volatile void comando_ar(int cmd);
 void medicaoPotencia();
 static void prvSensorCallback(TimerHandle_t xTimer);
 volatile void comando_ar(int cmd);
+
+void task_sensor( void * pvParameter );
 
 //configs
 #include "bluetooth.c"

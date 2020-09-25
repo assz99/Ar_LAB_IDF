@@ -34,3 +34,14 @@ static void prvSensorCallback(TimerHandle_t xTimer)
     temp_DHT();
     medicaoPotencia();
 }
+
+void task_sensor(void *pvParameter)
+{
+
+    for (;;)
+    {
+        temp_DHT();
+        medicaoPotencia();
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+    }
+}
