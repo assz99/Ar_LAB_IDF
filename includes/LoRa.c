@@ -1,5 +1,7 @@
 void receberLoRa()
 {
+
+    
     String ex;
     char chMsgLoRa[30];
     String(ex).toCharArray(chMsgLoRa, 30);
