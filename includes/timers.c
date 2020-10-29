@@ -1,38 +1,24 @@
 void task_timers()
 {
-    TimerHandle_t xLoRaTimer, xSensorTimer;
-    BaseType_t xTimer1Started, xTimer2Started;
+    TimerHandle_t xControleLoRaTimer;
+    BaseType_t xTimer1Started;
 
-    /*xLoRaTimer = xTimerCreate("envio_Lora",
-                              mainLoRa_PERIOD,
-                              pdTRUE,
-                              30,
-                              prvLoRaCallback);*/
+    xControleLoRaTimer = xTimerCreate("Controle_LoRa",
+                                      mainControleLoRa_PERIOD,
+                                      pdTRUE,
+                                      30,
+                                      checarControle);
 
-    xSensorTimer = xTimerCreate("Sensortimer",
-                                mainSensor_PERIOD,
-                                pdTRUE,
-                                0,
-                                prvSensorCallback);
-
-    if ((xSensorTimer != NULL) /*&& ( xAutoReloadTimer != NULL )*/)
+    if (xControleLoRaTimer != NULL)
     {
 
-        xTimer1Started = xTimerStart(xSensorTimer, 0);
-        //xTimer2Started = xTimerStart( xAutoReloadTimer, 0 );
+        xTimer1Started = xTimerStart(xControleLoRaTimer, 0);
 
-        if ((xTimer1Started == pdPASS) /*&& ( xTimer2Started == pdPASS )*/)
+        if (xTimer1Started == pdPASS)
         {
             Serial.println("Timers criados e iniciados");
         }
     }
-}
-
-static void prvSensorCallback(TimerHandle_t xTimer)
-{
-
-    temp_DHT();
-    medicaoPotencia();
 }
 
 void task_sensor(void *pvParameter)
@@ -42,7 +28,7 @@ void task_sensor(void *pvParameter)
     {
         temp_DHT();
         medicaoPotencia();
-        msgSensores = String(temperatura) + "!"+ String(humidade) + "!" + String(Irms) + "!" + String(potencia) + "!" + String(kwhTotal_Acc, 5);
+        msgSensores = String(temperatura) + "!" + String(humidade) + "!" + String(Irms) + "!" + String(potencia) + "!" + String(kwhTotal_Acc, 5);
         vTaskDelay(1000 / portTICK_PERIOD_MS);
     }
 }

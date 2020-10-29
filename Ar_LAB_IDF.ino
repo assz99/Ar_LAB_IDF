@@ -1,8 +1,7 @@
 #include "includes/headers.h"
 
-void setup()
-{
-    Serial.begin(115200);
+void setup(){
+    /*Serial.begin(115200);
     oledInit();
     SCT013.current(pinSCT, 5.4);
 
@@ -25,7 +24,9 @@ void setup()
         Mac_Local_Full += InfoMacLocal[s];
     }
     localAddress = Mac_Local_Full;
-
+    
+    loraConfig();
+    
     oledLimpar();
     oledEscrever(0, 0, "" + String(MAC_LOCAL));
     oledEscrever(0, 16, "Novo: " + String(Mac_Local_Full));
@@ -35,7 +36,7 @@ void setup()
     ////////////////////////////////////////
 
     blueInit();
-
+    //Criação da task do sensores
     if ((xTaskCreate(task_sensor, "task_sensor", 4048, NULL, 5, NULL)) != pdTRUE)
     {
         ESP_LOGI(TAG, "error - nao foi possivel alocar task_sensor.\n");
@@ -43,10 +44,23 @@ void setup()
     }
     else
     {
-        Serial.println("Task criada com sucesso");
+        Serial.println("Task_sensor criada com sucesso");
     }
+
+    //Criação da task do sensores Recebimento LoRa
+    if ((xTaskCreate(taskReceberLoRa, "taskReceberLoRa", 4048, NULL, 5, NULL)) != pdTRUE)
+    {
+        ESP_LOGI(TAG, "error - nao foi possivel alocar task_sensor.\n");
+        return;
+    }
+    else
+    {
+        Serial.println("Task_Receber_LoRa criada com sucesso");
+    }*/
 }
 
-void loop(){
 
-};
+  
+void loop() {
+  vTaskDelay(1000 / portTICK_PERIOD_MS);
+}

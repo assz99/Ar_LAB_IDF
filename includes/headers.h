@@ -26,13 +26,14 @@
 #include <Wire.h>
 #include <SimpleDHT.h>
 #include "Oled_api.h"
-
+#include "RTClib.h"
+#include "LoRa_RadioHead.h"
 //Variaveis do controle do LoRa
 String localAddress;
 String destino;
 String projNome;
 int timeStamp;
-int controleTimeStamp[10] = {0,0,0,0,0,0,0,0,0,0};
+int controleTimeStamp[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 String controleMsg[10];
 String msgSensores;
 
@@ -40,14 +41,14 @@ String msgSensores;
 float humidade;
 float temperatura;
 //Variaveis EmonLib
-double Irms; // CORRENTE MEDIDA
-int pinSCT = A0; //Pino analógico conectado ao SCT-013 36
+double Irms;      // CORRENTE MEDIDA
+int pinSCT = A0;  //Pino analógico conectado ao SCT-013 36
 int tensao = 220; // TENSÃO NOMINAL
-int potencia; // POTENCIA CALCULADA
+int potencia;     // POTENCIA CALCULADA
 double kwhTotal = 0;
 double kwhTotal_Acc = 0;
 //Variaveis IRemote
-int temp_ar = 20;// Variavel Inicial temperatuda do ar
+int temp_ar = 20; // Variavel Inicial temperatuda do ar
 int enviar_cmd = 0;
 int khz = 38; // 38kHz carrier frequency for the NEC protocol;
 ///////////////////////////
@@ -67,25 +68,24 @@ unsigned int ar27[] = {3050, 1550, 500, 1050, 550, 1050, 500, 300, 500, 300, 500
 unsigned int ar28[] = {3050, 1550, 500, 1100, 500, 1050, 500, 300, 500, 300, 500, 300, 550, 1050, 500, 300, 500, 300, 500, 1050, 550, 1050, 500, 300, 500, 1050, 500, 300, 550, 300, 500, 1050, 500, 1050, 500, 300, 550, 1050, 500, 1050, 500, 300, 500, 300, 550, 1050, 500, 300, 500, 300, 500, 1050, 550, 300, 500, 300, 500, 300, 500, 300, 500, 350, 500, 300, 500, 300, 500, 300, 500, 300, 550, 300, 500, 300, 500, 300, 500, 300, 550, 300, 500, 300, 500, 300, 500, 300, 550, 1050, 500, 300, 500, 300, 500, 1050, 550, 300, 500, 300, 500, 1050, 500, 1050, 550, 300, 500, 300, 500, 300, 500, 300, 500, 300, 550, 300, 500, 1050, 500, 1050, 500, 300, 550, 300, 500, 300, 500, 300, 500, 300, 550, 300, 500, 300, 500, 300, 500, 300, 550, 300, 500, 300, 500, 300, 500, 1050, 500, 350, 500, 300, 500, 300, 500, 300, 500, 300, 550, 300, 500, 300, 500, 300, 500, 300, 550, 300, 500, 300, 500, 300, 500, 300, 550, 300, 500, 300, 500, 300, 500, 300, 500, 350, 500, 300, 500, 300, 500, 300, 500, 300, 550, 300, 500, 300, 500, 300, 500, 300, 550, 300, 500, 300, 500, 300, 500, 300, 500, 350, 500, 300, 500, 1050, 500, 1050, 500, 1100, 500, 1050, 500, 1050, 500, 1050, 550, 1050, 500, 1050, 500, 1050, 500};
 ///////////////////////////
 // Defines Do timer
-#define mainLoRa_PERIOD (pdMS_TO_TICKS(3333UL))
-#define mainSensor_PERIOD (pdMS_TO_TICKS(1000UL)) //Leitura dos sensores a cada 1 SEG
-
-
-
+#define mainControleLoRa_PERIOD (pdMS_TO_TICKS(5000UL))
+//Leitura dos sensores a cada 1 SEG
 
 //Funcões
-static void prvLoRaCallback(TimerHandle_t xTimer);
-static void prvSensorCallback(TimerHandle_t xTimer);
+static void checarControle(TimerHandle_t xTimer);
 volatile void comando_ar(int cmd);
 void medicaoPotencia();
 static void prvSensorCallback(TimerHandle_t xTimer);
 volatile void comando_ar(int cmd);
-
-void task_sensor( void * pvParameter );
+void taskReceberLoRa(void *pvParameter);
+void task_sensor(void *pvParameter);
 
 //configs
+#include "rtc.c"
 #include "bluetooth.c"
 #include "dht22.c"
 #include "emonlib.c"
 #include "iRremote.c"
+#include "LoRa.c"
 #include "timers.c"
+
